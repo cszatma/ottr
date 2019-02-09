@@ -1,3 +1,3 @@
-# OTTR
+# WAYO
 
-Backend API for OTTR project developed during Hackville hackathon.
+Backend API for WAYO project developed during Hackville hackathon.
