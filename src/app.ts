@@ -11,6 +11,8 @@ import './utils/passport';
 import { handleErrors } from './middlewares/error-handlers';
 import userRoutes from './routes/user';
 import authRoutes from './routes/auth';
+import groupRoutes from './routes/group';
+import contactRoutes from './routes/contact';
 
 const app = express();
 app.use(bodyParser.json());
@@ -27,16 +29,8 @@ app.use(passport.session());
 
 app.use('/api/user', userRoutes);
 app.use('/api/auth', authRoutes);
-
-app.get('/test', (req, res) => {
-  res.json({
-    name: 'test request',
-    num: 10,
-    obj: {
-      hello: true,
-    },
-  });
-});
+app.use('/api/group', groupRoutes);
+app.use('/api/contact', contactRoutes);
 
 app.use(handleErrors);
 
