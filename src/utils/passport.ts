@@ -9,7 +9,7 @@ passport.serializeUser((user: { id: string }, done) => done(null, user.id));
 passport.deserializeUser(async (id: string, done) =>
   getClient(client => {
     client.query(
-      'SELECT id, email FROM ottr_user WHERE id = $1',
+      'SELECT id, name, email, latitude, longitude, points FROM ottr_user WHERE id = $1',
       [id],
       (err, results) => {
         if (err) {
