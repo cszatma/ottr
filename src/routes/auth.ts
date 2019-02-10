@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 
 import getClient from '../postgres/get-client';
 import { AuthRequest } from '../types/express-extensions';
+import requireLogin from '../middlewares/require-login';
 
 const router = Router();
 
@@ -41,6 +42,21 @@ router.post(
 router.post('/logout', (req: Request, res: Response) => {
   req.logout();
   res.json({ loggedOut: true });
+});
+
+router.put('/update', requireLogin, async (req: AuthRequest, res: Response) => {
+  const user = req.user!;
+  const { name, email, password, latitude, longitude, points } = req.body;
+  const hash = password && (await bcrypt.hash(password, 10));
+
+  getClient(async client => {
+    const result = await client.query(
+      'UPDATE ottr_user SET name = $1, email = $2, password = $3, latitude = $4, longitude = $5, points = $6 WHERE id = $7',
+      [name, email, hash, latitude, longitude, points],
+    );
+
+    res.json(result);
+  });
 });
 
 export default router;
